@@ -1,6 +1,10 @@
 # the code of CNN model, training and predicting process
 # input of this code is the trainset.h5
 # output of this code is Prediction_Distribution.h5
+# Author : Feng Hong, <hongfeng@ouc.edu.cn>, Ocean University of China
+# Author : Zhongning Zhao, <zhaozhongning1995@foxmail.com>, Ocean University of China
+
+
 from __future__ import print_function
 from keras.models import Sequential
 from keras.layers import Activation
@@ -12,8 +16,8 @@ import os
 
 Grid = 24  # the size of fishing effort distribution (X = Y = 24)
 lr = 0.0002
-batch_size = 10
-epochs = 2000
+batch_size = 1
+epochs = 10000
 
 
 train_dataset = h5py.File('the path of the training set storage/trainset.h5', "r")
