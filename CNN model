@@ -12,6 +12,7 @@ import numpy as np
 import h5py
 from keras.layers.convolutional import Convolution2D
 from keras.optimizers import Adam
+from keras import backend as K
 import os
 
 Grid = 24  # the size of fishing effort distribution (X = Y = 24)
