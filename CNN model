@@ -1,6 +1,6 @@
 # the code of CNN model, training and predicting process
 # input of this code is the trainset.h5
-# output of this code is Prediction_Distribution.h5
+# output of this code is prediction_model.h5
 # Author : Feng Hong, <hongfeng@ouc.edu.cn>, Ocean University of China
 # Author : Zhongning Zhao, <zhaozhongning1995@foxmail.com>, Ocean University of China
 
@@ -12,86 +12,72 @@ import numpy as np
 import h5py
 from keras.layers.convolutional import Convolution2D
 from keras.optimizers import Adam
-from keras import backend as K
 import os
+from keras import backend as K
 
-Grid = 24  # the size of fishing effort distribution (X = Y = 24)
+Grid = 24
 lr = 0.0002
 batch_size = 1
-epochs = 20000
+epochs = 300
+
 
 # define the loss function RMSE
 def root_mean_squared_error(y_true, y_pred):
     return K.sqrt(K.mean(K.square(y_pred - y_true)))
 
-train_dataset = h5py.File('the path of the training set storage/trainset.h5', "r")
+
+
+Model_path = "The trainset and testset path"
+os.chdir(Model_path)
+train_dataset = h5py.File('trainset.h5', "r")
 train_set_x_orig = np.array(train_dataset["train_set_x"][:])  # your train set features
 train_set_y_orig = np.array(train_dataset["train_set_y"][:])  # your train set labels
-model = Sequential()  # initializing the CNN model
-#  adding 15 CNN layers and the ReLu function
-model.add(Convolution2D(64, 3, 3, input_shape=(Grid, Grid, 7), border_mode='same'))
+model = Sequential()
+model.add(Convolution2D(64, 3, input_shape=(Grid, Grid, 1), padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(64, 3, 3, border_mode='same'))
+model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
-
-model.add(Convolution2D(1, 3, 3, border_mode='same'))
+model.add(Convolution2D(1, 3, padding='same'))
 model.add(Activation('relu'))
-
 adam = Adam(lr=lr)
-model.compile(loss = root_mean_squared_error, optimizer = adam)
+model.compile(loss=root_mean_squared_error, optimizer=adam)
 model.summary()
 history = model.fit(train_set_x_orig, train_set_y_orig,
                     batch_size=batch_size,
                     epochs=epochs,
                     verbose=1,
-                    validation_split=0.1,
+                    validation_split=0,
                     callbacks=[],
                     )
+os.chdir(Model_path)
+model.save('prediction_model.h5')
 
 
-test_dataset = h5py.File('the path of the test set storage/testset.h5', "r")
-test_set_x_orig = np.array(test_dataset["test_set_x"][:])  # your test set features
-test_set_y_orig = np.array(test_dataset["test_set_y"][:])  # your test set labels
-pred = model.predict(test_set_x_orig, batch_size=1, verbose=1, steps=None)
-f = h5py.File('the path of the result storage/Prediction_Distribution.h5', 'w')
-f.create_dataset('Prediction', data=pred)
-f.close()
+
+
 
 
