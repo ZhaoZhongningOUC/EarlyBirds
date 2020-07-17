@@ -1,0 +1,31 @@
+# This code is used to produce the prediction of fishing effort distribution
+# By using the CNN model's output (predictiom_model.h5), you can directly get the prediction result (Prediction.h5)
+
+from __future__ import print_function
+from keras.models import load_model
+import numpy as np
+import h5py
+import os
+from keras import backend as K
+
+
+Model_path = "The trainset and testset path"
+os.chdir(Model_path)
+lr = 0.0002
+Grid = 24
+
+
+
+model = load_model('prediction_model.h5')
+test_dataset = h5py.File('testset.h5', "r")
+test_set_x_orig = np.array(test_dataset["test_set_x"][:])  # your test set features
+test_set_y_orig = np.array(test_dataset["test_set_y"][:])  # your test set labels
+pred = model.predict(test_set_x_orig, batch_size=1, verbose=1, steps=None)
+f = h5py.File('Prediction.h5', 'w')
+f.create_dataset('Prediction', data=pred)
+f.close()
+
+
+
+
+
