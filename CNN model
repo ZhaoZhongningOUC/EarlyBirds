@@ -18,7 +18,7 @@ from keras import backend as K
 Grid = 24
 lr = 0.0002
 batch_size = 1
-epochs = 5000
+epochs = 30000
 
 
 # define the loss function RMSE
@@ -33,7 +33,7 @@ train_dataset = h5py.File('trainset.h5', "r")
 train_set_x_orig = np.array(train_dataset["train_set_x"][:])  # your train set features
 train_set_y_orig = np.array(train_dataset["train_set_y"][:])  # your train set labels
 model = Sequential()
-model.add(Convolution2D(64, 3, input_shape=(Grid, Grid, 1), padding='same'))
+model.add(Convolution2D(64, 3, input_shape=(Grid, Grid, 7), padding='same'))
 model.add(Activation('relu'))
 model.add(Convolution2D(64, 3, padding='same'))
 model.add(Activation('relu'))
@@ -74,7 +74,7 @@ history = model.fit(train_set_x_orig, train_set_y_orig,
                     callbacks=[],
                     )
 os.chdir(Model_path)
-model.save('prediction_model.h5')
+model.save('my_model.h5')
 
 
 
