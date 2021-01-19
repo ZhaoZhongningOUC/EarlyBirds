@@ -16,7 +16,7 @@ Grid = 24
 
 
 
-model = load_model('prediction_model.h5')
+model = load_model('my_model.h5')
 test_dataset = h5py.File('testset.h5', "r")
 test_set_x_orig = np.array(test_dataset["test_set_x"][:])  # your test set features
 test_set_y_orig = np.array(test_dataset["test_set_y"][:])  # your test set labels
